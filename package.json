@@ -1,0 +1,11 @@
+{
+  "name": "huella-ble-pwa",
+  "version": "1.0.0",
+  "description": "Huella BLE PWA Demo",
+  "scripts": {
+    "start": "echo 'This is a static site'"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

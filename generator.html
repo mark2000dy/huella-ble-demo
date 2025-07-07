@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generador de Iconos PWA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .icon-preview {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            display: block;
+            margin: 10px auto;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0052a3;
+        }
+        .download-section {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Iconos PWA - Huella BLE</h1>
+        
+        <div id="icon-container">
+            <!-- SVG Master -->
+            <svg id="icon-svg" width="512" height="512" viewBox="0 0 512 512" style="display: none;">
+                <!-- Fondo circular con gradiente -->
+                <defs>
+                    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0066cc;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#004499;stop-opacity:1" />
+                    </linearGradient>
+                    <filter id="shadow">
+                        <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.3"/>
+                    </filter>
+                </defs>
+                
+                <!-- Círculo de fondo -->
+                <circle cx="256" cy="256" r="240" fill="url(#bgGradient)" filter="url(#shadow)"/>
+                
+                <!-- Símbolo Bluetooth estilizado -->
+                <g transform="translate(256, 256)">
+                    <!-- Línea central -->
+                    <rect x="-8" y="-120" width="16" height="240" fill="white" opacity="0.9"/>
+                    
+                    <!-- Triángulo superior -->
+                    <path d="M -8,-120 L 80,-60 L 80,-40 L -8,-80 Z" fill="white"/>
+                    
+                    <!-- Triángulo inferior -->
+                    <path d="M -8,120 L 80,60 L 80,40 L -8,80 Z" fill="white"/>
+                    
+                    <!-- Líneas diagonales -->
+                    <path d="M -60,-60 L 80,40" stroke="white" stroke-width="16" stroke-linecap="round" fill="none"/>
+                    <path d="M -60,60 L 80,-40" stroke="white" stroke-width="16" stroke-linecap="round" fill="none"/>
+                    
+                    <!-- Puntos de acento (simulando señal) -->
+                    <circle cx="120" cy="0" r="8" fill="white" opacity="0.6"/>
+                    <circle cx="140" cy="-20" r="6" fill="white" opacity="0.4"/>
+                    <circle cx="140" cy="20" r="6" fill="white" opacity="0.4"/>
+                    <circle cx="160" cy="-40" r="4" fill="white" opacity="0.2"/>
+                    <circle cx="160" cy="40" r="4" fill="white" opacity="0.2"/>
+                </g>
+                
+                <!-- Texto (opcional) -->
+                <text x="256" y="420" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle" opacity="0.9">HUELLA</text>
+            </svg>
+        </div>
+
+        <!-- Previews -->
+        <div class="icon-preview">
+            <h3>512x512</h3>
+            <canvas id="canvas-512" width="512" height="512"></canvas>
+            <button onclick="downloadIcon(512)">Descargar PNG 512x512</button>
+        </div>
+
+        <div class="icon-preview">
+            <h3>192x192</h3>
+            <canvas id="canvas-192" width="192" height="192"></canvas>
+            <button onclick="downloadIcon(192)">Descargar PNG 192x192</button>
+        </div>
+
+        <div class="download-section">
+            <h3>Iconos Adicionales</h3>
+            <button onclick="downloadIcon(128)">PNG 128x128</button>
+            <button onclick="downloadIcon(96)">PNG 96x96</button>
+            <button onclick="downloadIcon(72)">PNG 72x72</button>
+            <button onclick="downloadIcon(48)">PNG 48x48</button>
+            <button onclick="downloadAllIcons()">Descargar Todos</button>
+            <button onclick="downloadSVG()">Descargar SVG</button>
+        </div>
+
+        <div class="download-section">
+            <h3>Versión Simplificada (Sin Texto)</h3>
+            <button onclick="toggleText()">Alternar Texto</button>
+        </div>
+    </div>
+
+    <script>
+        let showText = true;
+
+        function drawIcon(size) {
+            const canvas = document.getElementById(`canvas-${size}`);
+            const ctx = canvas.getContext('2d');
+            const svg = document.getElementById('icon-svg');
+            
+            // Limpiar canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Convertir SVG a imagen
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const img = new Image();
+            const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+            const url = URL.createObjectURL(svgBlob);
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, size, size);
+                URL.revokeObjectURL(url);
+            };
+            
+            img.src = url;
+        }
+
+        function downloadIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            const svg = document.getElementById('icon-svg');
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const img = new Image();
+            const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+            const url = URL.createObjectURL(svgBlob);
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, size, size);
+                URL.revokeObjectURL(url);
+                
+                canvas.toBlob(function(blob) {
+                    const a = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    a.href = url;
+                    a.download = `icon-${size}.png`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+            };
+            
+            img.src = url;
+        }
+
+        function downloadSVG() {
+            const svg = document.getElementById('icon-svg');
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const blob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'icon.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadAllIcons() {
+            const sizes = [512, 192, 128, 96, 72, 48];
+            sizes.forEach(size => {
+                setTimeout(() => downloadIcon(size), size);
+            });
+        }
+
+        function toggleText() {
+            const textElement = document.querySelector('#icon-svg text');
+            showText = !showText;
+            textElement.style.display = showText ? 'block' : 'none';
+            drawIcon(512);
+            drawIcon(192);
+        }
+
+        // Inicializar
+        window.onload = function() {
+            drawIcon(512);
+            drawIcon(192);
+        };
+    </script>
+</body>
+</html>

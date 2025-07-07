@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/e4f1769b-9259-4789-a1ac-aa13e3bcc53b/resourceGroups/appsvc_linux_eastus2/providers/Microsoft.Web/sites/huella-ble-demo",
+    "appService.deploySubpath": "."
+}
