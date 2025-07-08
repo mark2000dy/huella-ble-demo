@@ -1,0 +1,319 @@
+/* app.css - Estilos específicos de la aplicación Huella BLE */
+
+/* General */
+body {
+    padding-top: 60px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Main content */
+.main-content {
+    padding: 20px 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+/* Cards */
+.card {
+    margin-bottom: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+/* Device cards */
+.device-card {
+    cursor: pointer;
+    min-height: 100px;
+}
+
+.device-card:hover {
+    border-color: var(--primary-color);
+}
+
+.device-card .card-body {
+    padding: 1rem;
+}
+
+.device-card h6 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+/* FAB Button */
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.4);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.6);
+}
+
+/* Status indicators */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.35em 0.65em;
+}
+
+#connectionIndicator {
+    min-width: 120px;
+}
+
+/* Control buttons */
+.btn-group .btn {
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.btn-group .btn i {
+    font-size: 1.5rem;
+}
+
+.btn-group .btn small {
+    font-size: 0.75rem;
+}
+
+/* Form controls */
+.form-control:disabled,
+.form-select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* PIN input */
+#pinInput {
+    font-size: 2rem;
+    letter-spacing: 0.5rem;
+    text-align: center;
+    font-family: monospace;
+}
+
+/* Data display */
+.data-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Chart container */
+#dataChart {
+    max-height: 400px;
+}
+
+/* Tab navigation */
+.nav-tabs .nav-link {
+    color: var(--text-secondary);
+    border: none;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    background-color: transparent;
+    border-color: var(--primary-color);
+}
+
+/* Info display */
+dl.row dt {
+    text-align: right;
+}
+
+dl.row dd {
+    margin-bottom: 0.5rem;
+}
+
+/* Alerts */
+.alert {
+    border-radius: 0.5rem;
+    border: none;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner-border {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.1em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 10px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .btn-group .btn {
+        width: 100%;
+    }
+    
+    .fab {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+    
+    #pinInput {
+        font-size: 1.5rem;
+        letter-spacing: 0.3rem;
+    }
+}
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1050;
+}
+
+.toast {
+    min-width: 250px;
+    backdrop-filter: blur(10px);
+}
+
+/* Export button */
+.btn-export {
+    position: relative;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Connection status animations */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.connecting {
+    animation: blink 1s infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .fab,
+    .btn,
+    .no-print {
+        display: none !important;
+    }
+    
+    .card {
+        break-inside: avoid;
+    }
+}
+
+/* Accessibility */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus styles */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 102, 204, 0.25);
+}
+
+/* Device status colors */
+.text-standby {
+    color: #ffc107;
+}
+
+.text-normal {
+    color: #28a745;
+}
+
+.text-error {
+    color: #dc3545;
+}
